@@ -1,0 +1,7 @@
+server:
+  port: 8070
+  context-path: /springboot
+
+people:
+  age: 17
+  sex: female
