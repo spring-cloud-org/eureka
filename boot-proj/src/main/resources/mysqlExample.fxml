@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wode.mapper.UserInfoMapper">
+    <!-- 参数是list，使用foreach 查询 -->
+    <select id="findByIds" parameterType="list" useCache="false" resultType="Admin">
+        SELECT <include refid="columns"/> FROM sys_admin
+        WHERE id in
+        <foreach collection="belongUserIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!-- 参数是list，使用foreach 更新 -->
+    <update id="resetVoucherRecord" parameterType="list">
+        <foreach collection="ids" separator=";" item="id">
+            update jjh_voucher_user_record
+            set state = 1, updated_at = now()
+            where id = #{id}
+            and state = 2
+        </foreach>
+    </update>
+
+    <!-- 参数是list，使用foreach 插入 -->
+    INSERT INTO strategy_share ( <include refid="columns"/> )
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.sharesName},
+        #{item.sharesCode},
+        #{item.ystdInner},
+        #{item.onceSharesCount},
+        #{item.origin},
+        #{item.reverse1},
+        #{item.reverse2},
+        #{item.reverse3},
+        #{item.reverse4},
+        #{item.plate},
+        #{item.status}
+        )
+    </foreach>
+
+    <!-- 使用 NOT EXISTS 查询数据分组并且order by limit 1 -->
+    <!-- 查询一个list 根据list中的customerId， 查询每一个customerId对应的数据，每一个customerId可能
+        对应多条数据，只去tradeDate 最大的一条-->
+    select t.customer_id AS customerId, t.deposit, t.balance from crm_td_gather_day t
+    where not exists (
+    select t2.* from crm_td_gather_day t2
+    where t.customer_id = t2.customer_id
+    and t2.trade_date > t.trade_date
+    ) and t.customer_id in
+    <foreach collection="customerIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</mapper>
