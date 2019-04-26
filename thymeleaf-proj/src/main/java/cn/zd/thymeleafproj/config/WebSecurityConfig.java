@@ -19,15 +19,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/", "/login").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated() // 其他 url 需要身份认证
                 .and()
-                .formLogin()
+                .formLogin() // //开启登录
                 .loginPage("/login")
                 .defaultSuccessUrl("/chat")
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll();
+        // 无权访问页面
+        httpSecurity.exceptionHandling().accessDeniedPage("");
     }
 
     @Override
