@@ -28,7 +28,7 @@ public class WsController {
 
     @MessageMapping("/chat")
     public void handleChat(Principal principal, String msg) {// principal中包含当前用户的信息
-        if (principal.getName().equals("wyf")) {
+        if ("wyf".equals(principal.getName())) {
             messagingTemplate.convertAndSendToUser("wisely", "/queue/notifications", principal.getName() + "-send: " + msg);
         } else {
             messagingTemplate.convertAndSendToUser("wyf", "/queue/notifications", principal.getName() + "-send: " + msg);
