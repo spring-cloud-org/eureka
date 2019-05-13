@@ -50,4 +50,7 @@
     <foreach collection="customerIds" index="index" item="item" open="(" separator="," close=")">
         #{item}
     </foreach>
+
+
+    update `mall_product_detail` set `content` = replace(content,"res.cngoldres.com","mallstatic.fushulong.com");
 </mapper>
