@@ -41,6 +41,8 @@ public class Tool {
         for (Integer integer : valueList) {
             System.out.println(integer);
         }
+
+
         valueList = Arrays.stream(valueStr.split(","))
                 .map(str -> Integer.valueOf(str))
                 .sorted(((o1, o2) -> o2.compareTo(o1)))
@@ -48,6 +50,9 @@ public class Tool {
         for (Integer integer : valueList) {
             System.out.println(integer);
         }
+
+
+
         valueList = Stream.of(valueStr.split(","))
                 .map(Integer :: new)
                 .sorted(((o1, o2) -> o2.compareTo(o1)))
@@ -55,6 +60,8 @@ public class Tool {
         for (Integer integer : valueList) {
             System.out.println(integer);
         }
+
+
         valueList = Stream.of(valueStr.split(","))
                 .map(Integer :: new)
                 .sorted(Comparator.comparing(Integer :: intValue).reversed())
